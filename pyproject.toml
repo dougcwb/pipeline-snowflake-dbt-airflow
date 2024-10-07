@@ -1,0 +1,11 @@
+[project]
+name = "pipeline-snowflake-dbt-airflow"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "astro>=0.2.7",
+    "dbt-core>=1.8.7",
+    "dbt-snowflake>=1.8.3",
+]
