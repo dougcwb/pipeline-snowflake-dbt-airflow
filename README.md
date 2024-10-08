@@ -1,10 +1,11 @@
-![Snowflake Free Virtual Hands-on Lab](https://img.shields.io/badge/Snowflake-2024%20Hands--On-blue)
-![SQL](https://img.shields.io/badge/SQL-blue)
+![Snowflake Free Virtual Hands-on Lab](https://img.shields.io/badge/Snowflake-blue)
 ![DBT](https://img.shields.io/badge/DBT-orange)
-![AWS S3](https://img.shields.io/badge/AWS-S3-green)
+![Airflow](https://img.shields.io/badge/Airflow-red)
+![UV](https://img.shields.io/badge/UV-black)
+![Docker](https://img.shields.io/badge/Docker-blue)
 
 # Pipeline using Snowflake, dbt core and Airflow
-
+![Airflow>DBT>Snowflake](/images/Airflow-DBT-Snowflake.png)
 
 This project will cover these topics:
 - Manage our packages with `UV`
@@ -29,10 +30,13 @@ This project will cover these topics:
 - Airflow
   * Install Astronomer
   * Deploy DBT project in Airflow
+  * Build DAGS
+  * Configure Connections
 
 
 ## Prerequisites
 - A Snowflake account (you can use a [Free-Trial](https://signup.snowflake.com/))
+- Docker Windows
 
 ## Step 1: Install and start UV
 We will use `UV` to manage our environment. Use PIPX like this `pipx install uv`
@@ -113,14 +117,15 @@ dbt_sf_pipeline:
 ```
 
 ## Step 6: Add dbt-labs
-This dbt package contains macros that can be (re)used across dbt projects. Create a file `packages.yml` in the root folder of the DBT project
-- Go to dbt folder `cd dbt_sf_pipeline` and paste:
+This dbt package contains macros that can be (re)used across dbt projects.
+
+Go to dbt folder `cd dbt_sf_pipeline` and create a file `packages.yml`:
 ```yml
 packages:
   - package: dbt-labs/dbt_utils
     version: ">=1.3.0"
 ```
-Now run `uv run dbt deps`
+Now run `uv run dbt deps` to download utils.
 
 ## Step 7: Create source and staging files
 Create `models/staging/tpch_sources.yml`
@@ -178,7 +183,7 @@ from
 ```
 
 ## Step 8: Macros (Don’t repeat yourself or D.R.Y.)
-Create `macros/pricing.sql`
+Create `macros/pricing.sql`. This will calculate the value for the order discount.
 
 ```sql
 {% macro discounted_amount(extended_price, discount_percentage, scale=2) %}
@@ -333,3 +338,12 @@ dbt_snowflake_dag = DbtDag(
     dag_id="dbt_dag",
 )
 ```
+![Dag Diagram overview](/images/dag-diagram.png)
+
+This is just the beginig. We could do a lot more in this project, such as:
+- Create documentation from DBT
+- Ingest some AWS S3 csv files
+- Use medalion architecture
+- etc
+
+But let's try another time.
